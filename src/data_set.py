@@ -23,21 +23,22 @@ def create_training_data():
             # plt.show()
 
 
-create_training_data()
-random.shuffle(training_data)
+def create_training_set():
+    create_training_data()
+    random.shuffle(training_data)
+    x = []
+    y = []
+    for feature, label in training_data:
+        x.append(feature)
+        y.append(label)
 
-x = []
-y = []
-
-for feature, label in training_data:
-    x.append(feature)
-    y.append(label)
+    # convert lists to np.array
+    x = np.array(x).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+    return x,y
 
 
-# convert lists to np.array
-x = np.array(x).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
-
-"""pickle_out = open("x.pickle", "wb")
+"""x, y = create_training_set()
+pickle_out = open("x.pickle", "wb")
 pickle.dump(y, pickle_out)
 pickle_out.close()
 pickle_out = open("y.pickle", "wb")
