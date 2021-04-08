@@ -24,16 +24,16 @@ class Model():
             x_test = tf.keras.utils.normalize(x_test, axis = 1)
 
             model = tf.keras.models.Sequential()
-            # model.add(tf.keras.layers.Flatten(input_shape = x.shape[1:]))
-            model.add(tf.keras.layers.Flatten())
+            model.add(tf.keras.layers.Flatten(input_shape = x.shape[1:]))
+            # model.add(tf.keras.layers.Flatten())
             model.add(tf.keras.layers.Dense(units = 128, activation=tf.nn.relu))
             model.add(tf.keras.layers.Dense(units = 128, activation=tf.nn.relu))
-            # model.add(tf.keras.layers.Dense(units = len(self.categories), activation=tf.nn.softmax))
-            model.add(tf.keras.layers.Dense(units = 10, activation=tf.nn.softmax))
+            model.add(tf.keras.layers.Dense(units = len(self.categories), activation=tf.nn.softmax))
+            # model.add(tf.keras.layers.Dense(units = 10, activation=tf.nn.softmax))
 
             model.compile(optimizer = 'adam', loss = 'sparse_categorical_crossentropy', metrics=['accuracy'])
-            # model.fit(x, y, epochs = 3)
-            model.fit(x_train, y_train, epochs = 3)
+            model.fit(x, y, epochs = 10)
+            # model.fit(x_train, y_train, epochs = 3)
 
             model.save(self.model_name)
             self.model = model
@@ -41,8 +41,8 @@ class Model():
     def recognize(self, img):
         if self.model == None:
             return -1
-        # img = np.array(img).reshape(-1 ,50, 50, 1) -> Wersja co rozpoznawania liter
-        img = np.array(img).reshape(-1 ,28, 28, 1)
+        img = np.array(img).reshape(-1 ,50, 50, 1)  # -> Wersja co rozpoznawania liter
+        # img = np.array(img).reshape(-1 ,28, 28, 1)
         img = tf.keras.utils.normalize(img, axis=1)
         plt.imshow(img[0], cmap=plt.cm.binary)
         plt.show()
