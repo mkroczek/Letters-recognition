@@ -39,6 +39,10 @@ class DataManager():
         y = []
         for feature, label in training_data:
             feature = np.array(feature)
+            # plt.imshow(feature, cmap="gray")
+            # plt.title(label)
+            # plt.show()
+            # print(feature)
             x.append(feature.flatten())
             y.append(label)
         # convert lists to np.array
