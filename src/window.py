@@ -1,6 +1,9 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-from src.model import Model
+# from src.model import Model
+from src.MLP import MLP
+from src.data_set import DataManager
+import numpy as np
 
 class Menu():
     def __init__(self, master):
@@ -16,8 +19,10 @@ class Menu():
 
     def recognize(self):
         img = self.master.drawing_box.board
-        result = self.master.model.recognize(img)
-        self.output.config(text = result)
+        img = np.array(img)
+        img = img.flatten()
+        result = self.master.model.predict(img)
+        self.output.config(text = self.master.categories[result])
 
     def clear(self):
         self.master.drawing_box.clear()
@@ -38,8 +43,8 @@ class DrawingBox():
         self.canvas_width = 250
         self.canvas_height = 250
         self.canvas = tk.Canvas(self.drawing_frame, width = self.canvas_width, height = self.canvas_height, bg = 'white')
-        self.img_width = 50
-        self.img_height = 50
+        self.img_width = 20
+        self.img_height = 20
         # self.img_width = 28
         # self.img_height = 28
         self.board = [[1]*self.img_width for i in range(self.img_height)]
@@ -66,7 +71,9 @@ class DrawingBox():
 
 class Window():
     def __init__(self, root):
-        self.model = Model()
+        self.categories = ["I", "O", "U", "W", "X"]
+        self.data_manager = DataManager("Letters", self.categories, 20)
+        self.model = MLP(self.data_manager.create_training_set(), len(self.categories))
         self.root = root
         self.drawing_box = DrawingBox(self)
         self.menu = Menu(self)

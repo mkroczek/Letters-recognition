@@ -38,12 +38,12 @@ class DataManager():
         x = []
         y = []
         for feature, label in training_data:
-            x.append(feature)
+            feature = np.array(feature)
+            x.append(feature.flatten())
             y.append(label)
-
         # convert lists to np.array
-        x = np.array(x).reshape(-1, self.IMG_SIZE, self.IMG_SIZE, 1)
-        y = np.array(y)
+        #x = np.array(x).reshape(-1, self.IMG_SIZE, self.IMG_SIZE, 1)
+        #y = np.array(y)
         return x,y
 
 

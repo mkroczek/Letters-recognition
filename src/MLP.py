@@ -3,6 +3,14 @@ from math import exp
 
 class MLP():
 
+    def __init__(self, training_set, n_categories):
+        self.network = None
+        self.train_data, self.exp_results = training_set
+        self.l_rate = 0.3
+        self.n_epoch = 20
+        self.n_hidden = 5
+        self.n_outputs = n_categories
+
     # Initialize a network
     def initialize_network(self, n_inputs, n_hidden, n_outputs):
         network = list()
@@ -61,7 +69,7 @@ class MLP():
     # Update network weights with error
     def update_weights(self, network, row, l_rate):
         for i in range(len(network)):
-            inputs = row[:-1]
+            inputs = row
             if i != 0:
                 inputs = [neuron['output'] for neuron in network[i - 1]]
             for neuron in network[i]:
@@ -70,28 +78,33 @@ class MLP():
                 neuron['weights'][-1] += l_rate * neuron['delta']
 
     # Train a network for a fixed number of epochs
-    def train_network(self, network, train, l_rate, n_epoch, n_outputs):
+    def train_network(self, network, train, exp_results, l_rate, n_epoch, n_outputs):
         for epoch in range(n_epoch):
             sum_error = 0
-            for row in train:
-                outputs = self.forward_propagate(network, row)
+            for row in range(len(train)):
+                outputs = self.forward_propagate(network, train[row])
                 expected = [0 for i in range(n_outputs)]
-                expected[row[-1]] = 1
+                expected[exp_results[row]] = 1
                 sum_error += sum([(expected[i] - outputs[i]) ** 2 for i in range(len(expected))])
                 self.backward_propagate_error(network, expected)
-                self.update_weights(network, row, l_rate)
+                self.update_weights(network, train[row], l_rate)
             print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
 
     # Make a prediction with a network
-    def predict(self, network, row):
-        outputs = self.forward_propagate(network, row)
+    def predict(self, row):
+        print(len(row))
+        outputs = self.forward_propagate(self.network, row)
         return outputs.index(max(outputs))
 
-mlp = MLP()
-network = mlp.initialize_network(2, 1, 2)
-row = [1, 0, None]
-mlp.forward_propagate(network, row)
-expected = [1, 0]
-mlp.backward_propagate_error(network, expected)
-for layer in network:
-    print(layer)
+    def train(self):
+        self.network = self.initialize_network(len(self.train_data[0]), self.n_hidden, self.n_outputs)
+        self.train_network(self.network, self.train_data, self.exp_results, self.l_rate, self.n_epoch, self.n_outputs)
+
+# mlp = MLP()
+# network = mlp.initialize_network(2, 1, 2)
+# row = [1, 0, None]
+# mlp.forward_propagate(network, row)
+# expected = [1, 0]
+# mlp.backward_propagate_error(network, expected)
+# for layer in network:
+#     print(layer)
