@@ -38,17 +38,17 @@ class DrawingBox():
         self.canvas_width = 250
         self.canvas_height = 250
         self.canvas = tk.Canvas(self.drawing_frame, width = self.canvas_width, height = self.canvas_height, bg = 'white')
-        # self.img_width = 50 -> wersja do letters
-        # self.img_height = 50 -> wersja do letters
-        self.img_width = 28
-        self.img_height = 28
-        self.board = [[0]*self.img_width for i in range(self.img_height)]
+        self.img_width = 50
+        self.img_height = 50
+        # self.img_width = 28
+        # self.img_height = 28
+        self.board = [[1]*self.img_width for i in range(self.img_height)]
         self.canvas.bind('<B1-Motion>', self.paint)
 
     def clear(self):
         for y in range(self.img_height):
             for x in range(self.img_width):
-                self.board[y][x] = 0
+                self.board[y][x] = 1
         self.canvas.delete("all")
 
     def paint(self, e):
@@ -56,7 +56,7 @@ class DrawingBox():
         cell_height = self.canvas_height/self.img_height
         x = int(e.x/cell_width)
         y = int(e.y/cell_height)
-        self.board[y][x] = 1
+        self.board[y][x] = 0
         self.canvas.create_rectangle(x*cell_width, y*cell_height, (x+1)*cell_width, (y+1)*cell_height, fill = "black")
 
     def place(self):

@@ -4,6 +4,7 @@ import os
 import cv2
 import random
 import pickle
+import src.image_utils as img_utils
 
 class DataManager():
     def __init__(self, data, categories, img_size):
@@ -17,11 +18,17 @@ class DataManager():
             path = os.path.join(self.DATA, category)
             class_num = self.CATEGORIES.index(category)
             for image in os.listdir(path):  # iterating through all images
-                image_array = cv2.imread(os.path.join(path, image), cv2.IMREAD_GRAYSCALE)  # reading image in grayscale
-                new_array = cv2.resize(image_array, (self.IMG_SIZE, self.IMG_SIZE))
+                # image_array = cv2.imread(os.path.join(path, image), cv2.IMREAD_GRAYSCALE)  # reading image in grayscale
+                image_array = cv2.imread(os.path.join(path, image))  # reading image in grayscale
+                # new_array = cv2.resize(image_array, (self.IMG_SIZE, self.IMG_SIZE))
+                new_array = img_utils.prepare_image(image_array, self.IMG_SIZE, self.IMG_SIZE)
                 training_data.append([new_array, class_num])
-                # plt.imshow(np.array(new_array), cmap="gray")
-                # plt.show()
+                # if (category == self.CATEGORIES[0]):
+                #     for i in range(len(new_array)):
+                #         print(new_array[i])
+                # if (category == self.CATEGORIES[0]):
+                #     plt.imshow(np.array(new_array), cmap="gray")
+                #     plt.show()
         return training_data
 
 
