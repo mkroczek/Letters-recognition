@@ -72,7 +72,7 @@ class DrawingBox():
 class Window():
     def __init__(self, root):
         self.categories = ["I", "O", "U", "W", "X"]
-        self.data_manager = DataManager("Letters", self.categories, 15)
+        self.data_manager = DataManager("Letters_gui", self.categories, 15)
         self.model = MLP(self.data_manager.create_training_set(), len(self.categories))
         self.root = root
         self.drawing_box = DrawingBox(self)
