@@ -1,5 +1,7 @@
 from random import random
 from math import exp
+from json_export import export_to_json
+from json_export import import_from_json
 from src.data_set import DataManager
 
 class MLP():
@@ -111,14 +113,19 @@ class MLP():
             print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
 
     # Make a prediction with a network
-    def predict(self, row):
+    def predict(self, row, importing=False):
+        if importing:
+            self.network = import_from_json()
+
         outputs = self.forward_propagate(self.network, row)
         return outputs.index(max(outputs))
 
-    def train(self):
+    def train(self, exporting=False):
         print("I am already here")
         self.network = self.initialize_network(len(self.train_data[0]), self.n_hidden, self.n_outputs)
         # self.network = self.initialize_network(len(self.dataset[0]), self.n_hidden, self.n_outputs)
         self.train_network(self.network, self.train_data, self.exp_results, self.l_rate, self.n_epoch, self.n_outputs)
         # self.train_network(self.network, self.dataset, self.expectations, self.l_rate, self.n_epoch, self.n_outputs)
 
+        if exporting:
+            export_to_json(self.network)
