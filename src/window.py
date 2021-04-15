@@ -25,7 +25,8 @@ class Menu():
 
     def import_json(self):
         self.master.model.set_network(import_from_json())
-        # print(f"Imported network has accuracy: {}")
+        x, y = self.master.data_manager.create_test_data(self.master.test_data_path)
+        print(f"Imported network has accuracy: {self.master.model.evaluate_network(x, y)}")
 
     def recognize(self):
         img = self.master.drawing_box.board

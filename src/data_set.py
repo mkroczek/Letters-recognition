@@ -48,7 +48,8 @@ class DataManager():
         return x,y
 
     def create_test_data(self, directory):
-        test_data = []
+        x = []
+        y = []
         for category in self.CATEGORIES:
             path = os.path.join(directory, category)
             class_num = self.CATEGORIES.index(category)
@@ -56,8 +57,9 @@ class DataManager():
                 image_array = cv2.imread(os.path.join(path, image))  # reading image in grayscale
                 new_array = img_utils.prepare_image(image_array, self.IMG_SIZE, self.IMG_SIZE)
                 new_array = np.array(new_array)
-                test_data.append([new_array.flatten(), class_num])
-        return test_data
+                x.append(new_array.flatten())
+                y.append(class_num)
+        return x,y
 
 
 """x, y = create_training_set()
