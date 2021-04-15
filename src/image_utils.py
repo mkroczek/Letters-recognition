@@ -12,5 +12,7 @@ def prepare_image(img, img_width, img_height):
             # img[i][j] = 1 - img[i][j]/255.0
             newimg[i][j] = 1 - img[i][j]/255.0
     # newimg = np.array(img).reshape(-1, img_width, img_height, 1)
+    # plt.imshow(newimg)
+    # plt.show()
     return newimg
 
