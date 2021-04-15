@@ -89,8 +89,6 @@ class DrawingBox():
                     self.board[y_i][x_i] = 0.0
         self.canvas.create_rectangle(x_range[0] * cell_width, y_range[0] * cell_height, (x_range[1]+1) * cell_width, (y_range[1]+1) * cell_height,
                                      fill="black")
-        for i in range(len(self.board)):
-            print(self.board[i])
 
     def place(self):
         self.drawing_frame.grid(row=0, column=0, padx=30, pady=30)
