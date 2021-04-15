@@ -61,7 +61,8 @@ class DrawingBox():
         cell_height = self.canvas_height/self.img_height
         x = int(e.x/cell_width)
         y = int(e.y/cell_height)
-        self.board[y][x] = 1.0
+        if (x < len(self.board) and y < len(self.board)):
+            self.board[y][x] = 1.0
         self.canvas.create_rectangle(x*cell_width, y*cell_height, (x+1)*cell_width, (y+1)*cell_height, fill = "black")
 
     def place(self):

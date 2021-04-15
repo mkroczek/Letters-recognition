@@ -44,7 +44,7 @@ class Menu():
         self.output.config(text="")
 
     def place(self):
-        self.menu_frame.grid(row=1, column=0, pady=30, padx=30)
+        self.menu_frame.grid(row=1, column=0, pady=(0, 30), padx=30)
         for i in range(len(self.letter_buttons)):
             self.letter_buttons[i].grid(row = int(i/3), column = i%3)
         self.save_button.grid(row=1, column=3)
@@ -65,6 +65,10 @@ class DrawingBox():
         # self.img_height = 28
         self.board = [[255.0] * self.img_width for i in range(self.img_height)]
         self.canvas.bind('<B1-Motion>', self.paint)
+        self.thickness = tk.IntVar()
+        self.thickness.set(1)
+        self.thickness_scale = tk.Scale(self.drawing_frame, from_=1, to=self.img_width,
+                                        orient=tk.HORIZONTAL, showvalue=1, variable=self.thickness)
 
     def clear(self):
         for y in range(self.img_height):
@@ -77,14 +81,22 @@ class DrawingBox():
         cell_height = self.canvas_height / self.img_height
         x = int(e.x / cell_width)
         y = int(e.y / cell_height)
-        self.board[y][x] = 0.0
-        self.canvas.create_rectangle(x * cell_width, y * cell_height, (x + 1) * cell_width, (y + 1) * cell_height,
+        y_range = [int(y - int((self.thickness.get()-1)/2)), int(y + int(self.thickness.get()/2))]
+        x_range = [int(x - int((self.thickness.get()-1)/2)), int(x + int(self.thickness.get()/2))]
+        for x_i in range(x_range[0], x_range[1] + 1):
+            for y_i in range(y_range[0], y_range[1] + 1):
+                if (x_i < len(self.board[0]) and y_i < len(self.board)):
+                    self.board[y_i][x_i] = 0.0
+        self.canvas.create_rectangle(x_range[0] * cell_width, y_range[0] * cell_height, (x_range[1]+1) * cell_width, (y_range[1]+1) * cell_height,
                                      fill="black")
+        for i in range(len(self.board)):
+            print(self.board[i])
 
     def place(self):
         self.drawing_frame.grid(row=0, column=0, padx=30, pady=30)
         self.title.grid(row=0, pady=5)
         self.canvas.grid(row=1, column=0)
+        self.thickness_scale.grid(row = 2, columnspan = 1, sticky = 'we', pady = (5,0))
 
 
 class Window():
