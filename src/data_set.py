@@ -26,9 +26,9 @@ class DataManager():
                 # if (category == self.CATEGORIES[0]):
                 #     for i in range(len(new_array)):
                 #         print(new_array[i])
-                if (category == self.CATEGORIES[0]):
-                    plt.imshow(np.array(new_array), cmap="gray")
-                    plt.show()
+                # if (category == self.CATEGORIES[0]):
+                #     plt.imshow(np.array(new_array), cmap="gray")
+                #     plt.show()
         return training_data
 
 
