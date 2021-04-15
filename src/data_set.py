@@ -23,10 +23,7 @@ class DataManager():
                 # new_array = cv2.resize(image_array, (self.IMG_SIZE, self.IMG_SIZE))
                 new_array = img_utils.prepare_image(image_array, self.IMG_SIZE, self.IMG_SIZE)
                 training_data.append([new_array, class_num])
-                # if (category == self.CATEGORIES[0]):
-                #     for i in range(len(new_array)):
-                #         print(new_array[i])
-                # if (category == self.CATEGORIES[0]):
+                # if (category == self.CATEGORIES[3]):
                 #     plt.imshow(np.array(new_array), cmap="gray")
                 #     plt.show()
         return training_data
@@ -49,6 +46,18 @@ class DataManager():
         #x = np.array(x).reshape(-1, self.IMG_SIZE, self.IMG_SIZE, 1)
         #y = np.array(y)
         return x,y
+
+    def create_test_data(self, directory):
+        test_data = []
+        for category in self.CATEGORIES:
+            path = os.path.join(directory, category)
+            class_num = self.CATEGORIES.index(category)
+            for image in os.listdir(path):  # iterating through all images
+                image_array = cv2.imread(os.path.join(path, image))  # reading image in grayscale
+                new_array = img_utils.prepare_image(image_array, self.IMG_SIZE, self.IMG_SIZE)
+                new_array = np.array(new_array)
+                test_data.append([new_array.flatten(), class_num])
+        return test_data
 
 
 """x, y = create_training_set()

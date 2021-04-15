@@ -3,19 +3,29 @@ import tkinter.ttk as ttk
 # from src.model import Model
 from src.MLP import MLP
 from src.data_set import DataManager
+from src.json_export import *
 import numpy as np
 
 class Menu():
     def __init__(self, master):
         self.master = master
         self.menu_frame = tk.Frame(self.master.root)
-        self.output = tk.Label(self.menu_frame, bg = 'yellow', width = 10 ,height = 5)
-        self.train_button = ttk.Button(self.menu_frame, text = 'Trenuj siec', command = lambda: self.train())
+        self.output = tk.Label(self.menu_frame, bg = '#a8cca7', width = 6 ,height = 3, font = 20)
         self.recognize_button = ttk.Button(self.menu_frame, text = 'Rozpoznaj', command = lambda: self.recognize())
         self.clear_button = ttk.Button(self.menu_frame, text = 'Wyczysc', command = lambda: self.clear())
+        self.export_button = ttk.Button(self.menu_frame, text = 'Zapisz', command = lambda: self.export_json())
+        self.train_button = ttk.Button(self.menu_frame, text = 'Trenuj siec', command = lambda: self.train())
+        self.import_button = ttk.Button(self.menu_frame, text = 'Wczytaj', command = lambda: self.import_json())
 
     def train(self):
         self.master.model.train()
+
+    def export_json(self):
+        export_to_json(self.master.model.network)
+
+    def import_json(self):
+        self.master.model.set_network(import_from_json())
+        # print(f"Imported network has accuracy: {}")
 
     def recognize(self):
         img = self.master.drawing_box.board
@@ -29,11 +39,13 @@ class Menu():
         self.output.config(text = "")
 
     def place(self):
-        self.menu_frame.grid(row = 1, column = 0, pady = 30, padx = 30)
-        self.train_button.grid(row = 0, column = 0, padx = 5)
-        self.recognize_button.grid(row = 0, column = 1, padx = 5)
-        self.clear_button.grid(row = 0, column = 2, padx = 5)
-        self.output.grid(row = 0, column = 3, padx = 5)
+        self.menu_frame.grid(row = 1, column = 0, padx = 30)
+        self.import_button.grid(row = 0, column = 0, padx = 5)
+        self.train_button.grid(row = 0, column = 1, padx = 5)
+        self.export_button.grid(row = 0, column = 2, padx = 5)
+        self.recognize_button.grid(row = 1, column = 0, padx = 5)
+        self.clear_button.grid(row = 1, column = 1, padx = 5)
+        self.output.grid(row = 1, column = 2, padx = 5, pady = 20)
 
 class DrawingBox():
     def __init__(self, master):
@@ -43,10 +55,8 @@ class DrawingBox():
         self.canvas_width = 250
         self.canvas_height = 250
         self.canvas = tk.Canvas(self.drawing_frame, width = self.canvas_width, height = self.canvas_height, bg = 'white')
-        self.img_width = 15
-        self.img_height = 15
-        # self.img_width = 28
-        # self.img_height = 28
+        self.img_width = self.master.img_size
+        self.img_height = self.master.img_size
         self.board = [[0.0]*self.img_width for i in range(self.img_height)]
         self.canvas.bind('<B1-Motion>', self.paint)
 
@@ -73,7 +83,9 @@ class DrawingBox():
 class Window():
     def __init__(self, root):
         self.categories = ["I", "O", "U", "W", "X"]
-        self.data_manager = DataManager("Letters_gui", self.categories, 15)
+        self.img_size = 15
+        self.data_manager = DataManager("Letters_gui", self.categories, self.img_size)
+        self.test_data_path = 'Letters_gui_test'
         self.model = MLP(self.data_manager.create_training_set(), len(self.categories))
         self.root = root
         self.drawing_box = DrawingBox(self)

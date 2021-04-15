@@ -96,11 +96,10 @@ class DrawingBox():
         self.canvas.grid(row=1, column=0)
         self.thickness_scale.grid(row = 2, columnspan = 1, sticky = 'we', pady = (5,0))
 
-
 class Window():
     def __init__(self, root):
         self.categories = ["I", "O", "U", "W", "X"]
-        self.save_directory = "Letters_gui"
+        self.save_directory = "Letters_gui_test"
         self.root = root
         self.drawing_box = DrawingBox(self)
         self.menu = Menu(self)
