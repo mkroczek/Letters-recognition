@@ -1,7 +1,7 @@
 from random import random
 from math import exp
-from json_export import export_to_json
-from json_export import import_from_json
+from src.json_export import export_to_json
+from src.json_export import import_from_json
 from src.data_set import DataManager
 
 class MLP():
