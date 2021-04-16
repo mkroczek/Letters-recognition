@@ -1,11 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-# from src.model import Model
-from src.MLP import MLP
-from src.data_set import DataManager
 import numpy as np
 import os
-import io
 from PIL import Image
 
 
@@ -18,7 +14,6 @@ class Menu():
         for letter in self.master.categories:
             self.letter_buttons.append(ttk.Button(self.menu_frame, text=letter, command=lambda letter = letter: self.choose(letter)))
         self.save_button = ttk.Button(self.menu_frame, text='Zapisz', command=lambda: self.save())
-        # self.clear_button = ttk.Button(self.menu_frame, text='Wyczysc', command=lambda: self.clear())
 
     def choose(self, letter):
         self.output.config(text = letter)
@@ -61,8 +56,6 @@ class DrawingBox():
         self.canvas = tk.Canvas(self.drawing_frame, width=self.canvas_width, height=self.canvas_height, bg='white')
         self.img_width = 30
         self.img_height = 30
-        # self.img_width = 28
-        # self.img_height = 28
         self.board = [[255.0] * self.img_width for i in range(self.img_height)]
         self.canvas.bind('<B1-Motion>', self.paint)
         self.thickness = tk.IntVar()
